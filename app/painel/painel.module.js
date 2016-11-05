@@ -8,19 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var AppComponent = (function () {
-    function AppComponent() {
+var core_1 = require('@angular/core');
+var painel_component_1 = require('./painel.component');
+var PainelModule = (function () {
+    function PainelModule() {
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'app',
-            templateUrl: 'app.component.html'
+    PainelModule = __decorate([
+        core_1.NgModule({
+            declarations: [painel_component_1.PainelComponent],
+            exports: [painel_component_1.PainelComponent]
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], PainelModule);
+    return PainelModule;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.PainelModule = PainelModule;
+//# sourceMappingURL=painel.module.js.map
