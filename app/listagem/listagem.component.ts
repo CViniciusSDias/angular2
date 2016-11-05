@@ -13,11 +13,9 @@ export class ListagemComponent
     constructor(http : Http)
     {
         http.get('v1/fotos')
-            .subscribe(res => {
-                this.fotos = res.json();
-                console.log(this.fotos);
-            }, erro => {
-                console.error(erro);
-            });
+            .subscribe(
+                res => this.fotos = res.json(),
+                erro => console.error(erro)
+            );
     }
 }
