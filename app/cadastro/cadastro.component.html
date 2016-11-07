@@ -1,30 +1,46 @@
 <div class="container">
-    <form class="row" (submit)="cadastrar($event)">
+    <h1 class="text-center">{{foto.titulo}}</h1>
+    <form [formGroup]="formulario" class="row" (submit)="cadastrar($event)">
         <div class="col-md-6">
             <div class="form-group">
                 <label>Título</label>
-                <input class="form-control" autocomplete="off"
-                  name="titulo" [(ngModel)]="foto.titulo" />
+                <input class="form-control" autocomplete="off" required
+                  name="titulo" [(ngModel)]="foto.titulo" formControlName="titulo" />
+                <div *ngIf="formulario.controls.titulo.invalid">
+                    <span *ngIf="formulario.controls.titulo.errors.required" class="form-control alert-danger">
+                        Título obrigatório
+                    </span>
+                    <span *ngIf="formulario.controls.titulo.errors.minlength" class="form-control alert-danger">
+                        Título deve ter no mínimo 4 caracteres
+                    </span>
+                </div>
             </div>
 
             <div class="form-group">
                 <label>URL</label>
-                <input class="form-control" autocomplete="off"
-                  name="url" [(ngModel)]="foto.url" />
+                <input class="form-control" autocomplete="off" required
+                  name="url" [(ngModel)]="foto.url" formControlName="url" />
+                <span *ngIf="formulario.controls.url.invalid" class="form-control alert-danger">
+                    URL obrigatória
+                </span>
             </div>
 
             <div class="form-group">
                 <label>Descrição</label>
                 <textarea class="form-control" autocomplete="off"
-                  name="descricao" [(ngModel)]="foto.descricao"></textarea>
+                  name="descricao" [(ngModel)]="foto.descricao" formControlName="descricao"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" [disabled]="formulario.invalid">
                 Salvar
             </button>
 
             <a [routerLink]="['']" class="btn btn-primary">Voltar</a>
             <hr>
+        </div>
+
+        <div class="col-md-6">
+            <foto [url]="foto.url" [titulo]="foto.titulo"></foto>
         </div>
     </form>
 </div>
