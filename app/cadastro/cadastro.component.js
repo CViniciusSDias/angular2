@@ -12,8 +12,10 @@ var core_1 = require('@angular/core');
 var foto_component_1 = require('../foto/foto.component');
 var foto_service_1 = require('../foto/foto.service');
 var forms_1 = require('@angular/forms');
+var router_1 = require('@angular/router');
 var CadastroComponent = (function () {
-    function CadastroComponent(service, formBuilder) {
+    function CadastroComponent(service, formBuilder, route, router) {
+        var _this = this;
         this.foto = new foto_component_1.FotoComponent();
         this.service = service;
         this.formulario = formBuilder.group({
@@ -21,12 +23,24 @@ var CadastroComponent = (function () {
             url: [forms_1.Validators.required],
             descricao: []
         });
+        this.route = route;
+        this.route.params.subscribe(function (params) {
+            var id = params['id'];
+            if (id) {
+                _this.service.buscaPorId(id).subscribe(function (foto) { return _this.foto = foto.json(); }, function (e) { return console.error(e); });
+            }
+        });
+        this.router = router;
     }
     CadastroComponent.prototype.cadastrar = function (e) {
         var _this = this;
         e.preventDefault();
         this.service.cadastra(this.foto)
-            .subscribe(function (resposta) { return _this.foto = new foto_component_1.FotoComponent(); }, function (erro) { return console.error(erro); });
+            .subscribe(function (resposta) {
+            if (_this.foto._id)
+                _this.router.navigate(['']);
+            _this.foto = new foto_component_1.FotoComponent();
+        }, function (erro) { return console.error(erro); });
     };
     CadastroComponent = __decorate([
         core_1.Component({
@@ -34,7 +48,7 @@ var CadastroComponent = (function () {
             selector: 'cadastro',
             templateUrl: 'cadastro.component.html'
         }), 
-        __metadata('design:paramtypes', [foto_service_1.FotoService, forms_1.FormBuilder])
+        __metadata('design:paramtypes', [foto_service_1.FotoService, forms_1.FormBuilder, router_1.ActivatedRoute, router_1.Router])
     ], CadastroComponent);
     return CadastroComponent;
 }());
