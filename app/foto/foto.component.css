@@ -1,0 +1,7 @@
+img:hover {
+    transform: scale(1.5, 1.5);
+}
+
+img {
+    transition: .5s all;
+}
