@@ -2,6 +2,7 @@ import {Http, Headers, Response} from '@angular/http';
 import {FotoComponent} from './foto.component';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+import 'rxjs/Rx';
 
 @Injectable()
 export class FotoService
@@ -17,17 +18,19 @@ export class FotoService
         this.headers.append('Content-Type', 'application/json');
     }
 
-    cadastra(foto : FotoComponent) : Observable<Response>
+    cadastra(foto : FotoComponent) : Observable<MensagemCadastro>
     {
         if (foto._id)
-            return this.http.put(this.url + '/' + foto._id, JSON.stringify(foto), {headers: this.headers});
-        else
-            return this.http.post(this.url, JSON.stringify(foto), {headers: this.headers});
+            return this.http.put(this.url + '/' + foto._id, JSON.stringify(foto), {headers: this.headers})
+                .map(() => new MensagemCadastro('Foto alterada com sucesso', false));
+
+        return this.http.post(this.url, JSON.stringify(foto), {headers: this.headers})
+            .map(() => new MensagemCadastro('Foto cadastrada com sucesso', true));
     }
 
-    lista() : Observable<Response>
+    lista() : Observable<FotoComponent[]>
     {
-        return this.http.get(this.url);
+        return this.http.get(this.url).map(f => f.json());
     }
 
     remove(foto : FotoComponent)
@@ -35,8 +38,27 @@ export class FotoService
         return this.http.delete(this.url + '/' + foto._id);
     }
 
-    buscaPorId(id : string) : Observable<Response>
+    buscaPorId(id : string) : Observable<FotoComponent>
     {
-        return this.http.get(this.url + '/' + id);
+        return this.http.get(this.url + '/' + id).map(f => f.json());
+    }
+}
+
+class MensagemCadastro
+{
+    constructor(private _mensagem : string, private _inclusao : boolean)
+    {
+        this._mensagem = _mensagem;
+        this._inclusao = _inclusao;
+    }
+
+    get mensagem() : string
+    {
+        return this._mensagem;
+    }
+
+    get inclusao() : boolean
+    {
+        return this._inclusao;
     }
 }

@@ -16,6 +16,7 @@ export class CadastroComponent
     formulario : FormGroup;
     route : ActivatedRoute;
     router : Router;
+    mensagem : string = '';
 
     constructor(service : FotoService, formBuilder : FormBuilder, route : ActivatedRoute, router : Router)
     {
@@ -30,7 +31,7 @@ export class CadastroComponent
             let id = params['id'];
             if (id) {
                 this.service.buscaPorId(id).subscribe(
-                    foto => this.foto = foto.json(),
+                    foto => this.foto = foto,
                     e => console.error(e)
                 );
             }
@@ -44,9 +45,11 @@ export class CadastroComponent
         this.service.cadastra(this.foto)
             .subscribe(
                 resposta => {
-                    if (this.foto._id)
+                    if (!resposta.inclusao)
                         this.router.navigate(['']);
+
                     this.foto = new FotoComponent();
+                    this.mensagem = resposta.mensagem;
                 },
                 erro => console.error(erro)
             );

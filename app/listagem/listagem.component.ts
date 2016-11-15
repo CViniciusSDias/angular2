@@ -17,7 +17,7 @@ export class ListagemComponent
     {
         service.lista()
             .subscribe(
-                res => this.fotos = res.json(),
+                res => this.fotos = res,
                 erro => console.error(erro)
             );
         this.service = service;

@@ -17,6 +17,7 @@ var CadastroComponent = (function () {
     function CadastroComponent(service, formBuilder, route, router) {
         var _this = this;
         this.foto = new foto_component_1.FotoComponent();
+        this.mensagem = '';
         this.service = service;
         this.formulario = formBuilder.group({
             titulo: [forms_1.Validators.required, forms_1.Validators.minLength(4)],
@@ -27,7 +28,7 @@ var CadastroComponent = (function () {
         this.route.params.subscribe(function (params) {
             var id = params['id'];
             if (id) {
-                _this.service.buscaPorId(id).subscribe(function (foto) { return _this.foto = foto.json(); }, function (e) { return console.error(e); });
+                _this.service.buscaPorId(id).subscribe(function (foto) { return _this.foto = foto; }, function (e) { return console.error(e); });
             }
         });
         this.router = router;
@@ -37,9 +38,10 @@ var CadastroComponent = (function () {
         e.preventDefault();
         this.service.cadastra(this.foto)
             .subscribe(function (resposta) {
-            if (_this.foto._id)
+            if (!resposta.inclusao)
                 _this.router.navigate(['']);
             _this.foto = new foto_component_1.FotoComponent();
+            _this.mensagem = resposta.mensagem;
         }, function (erro) { return console.error(erro); });
     };
     CadastroComponent = __decorate([

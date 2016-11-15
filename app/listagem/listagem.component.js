@@ -16,7 +16,7 @@ var ListagemComponent = (function () {
         this.fotos = [];
         this.mensagem = '';
         service.lista()
-            .subscribe(function (res) { return _this.fotos = res.json(); }, function (erro) { return console.error(erro); });
+            .subscribe(function (res) { return _this.fotos = res; }, function (erro) { return console.error(erro); });
         this.service = service;
     }
     ListagemComponent.prototype.remove = function (foto) {
