@@ -14,9 +14,25 @@ var ListagemComponent = (function () {
     function ListagemComponent(service) {
         var _this = this;
         this.fotos = [];
+        this.mensagem = '';
         service.lista()
             .subscribe(function (res) { return _this.fotos = res.json(); }, function (erro) { return console.error(erro); });
+        this.service = service;
     }
+    ListagemComponent.prototype.remove = function (foto) {
+        var _this = this;
+        this.service.remove(foto)
+            .subscribe(function () {
+            var novasFotos = _this.fotos.slice(0);
+            var i = novasFotos.indexOf(foto);
+            novasFotos.splice(i, 1);
+            _this.fotos = novasFotos;
+            _this.mensagem = 'Foto removida com sucesso';
+        }, function (e) {
+            console.error(e);
+            _this.mensagem = 'Não foi possível remover a foto';
+        });
+    };
     ListagemComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
