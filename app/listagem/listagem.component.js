@@ -19,15 +19,17 @@ var ListagemComponent = (function () {
             .subscribe(function (res) { return _this.fotos = res; }, function (erro) { return console.error(erro); });
         this.service = service;
     }
-    ListagemComponent.prototype.remove = function (foto) {
+    ListagemComponent.prototype.remove = function (foto, painel) {
         var _this = this;
         this.service.remove(foto)
             .subscribe(function () {
-            var novasFotos = _this.fotos.slice(0);
-            var i = novasFotos.indexOf(foto);
-            novasFotos.splice(i, 1);
-            _this.fotos = novasFotos;
-            _this.mensagem = 'Foto removida com sucesso';
+            painel.fadeOut(function () {
+                var novasFotos = _this.fotos.slice(0);
+                var i = novasFotos.indexOf(foto);
+                novasFotos.splice(i, 1);
+                _this.fotos = novasFotos;
+                _this.mensagem = 'Foto removida com sucesso';
+            });
         }, function (e) {
             console.error(e);
             _this.mensagem = 'Não foi possível remover a foto';
